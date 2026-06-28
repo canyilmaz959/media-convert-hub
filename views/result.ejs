@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dosyanız Hazır | MedyaBox</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .preview-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: linear-gradient(45deg, #e2e8f0 25%, transparent 25%), 
+                              linear-gradient(-45deg, #e2e8f0 25%, transparent 25%), 
+                              linear-gradient(45deg, transparent 75%, #e2e8f0 75%), 
+                              linear-gradient(-45deg, transparent 75%, #e2e8f0 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+            border: 2px dashed #cbd5e1;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        .preview-img { max-width: 100%; max-height: 350px; object-fit: contain; border-radius: 0.375rem; }
+        .action-area { display: flex; gap: 1rem; }
+        .btn-secondary { background-color: #64748b; text-decoration: none; }
+        .btn-secondary:hover { background-color: #475569; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <div class="logo-area">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                </div>
+                <span class="logo-text" style="color: #0f172a;">Medya Dönüştürücü</span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="hero-area">
+            <h1 style="color: #16a34a;"><i class="fa-solid fa-circle-check"></i> Dosyanız Başarıyla Hazırlandı!</h1>
+            <p>İstediğiniz dönüşüm ve optimizasyon işlemleri tamamlandı. Güvenle indirebilirsiniz.</p>
+        </div>
+
+        <div class="card">
+            <div class="preview-box">
+                <img src="<%= outputPath %>" alt="Hazırlanan Medya Dosyası" class="preview-img">
+            </div>
+
+            <div class="action-area">
+                <a href="/" class="btn btn-secondary">
+                    <i class="fa-solid fa-arrow-left"></i> Yeni Dosya İşle
+                </a>
+                <a href="<%= outputPath %>" download class="btn btn-blue">
+                    <i class="fa-solid fa-download"></i> Dosyayı İndir
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        &copy; Can Yılmaz.
+    </footer>
+
+</body>
+</html>

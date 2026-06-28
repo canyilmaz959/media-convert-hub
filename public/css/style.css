@@ -1,0 +1,304 @@
+/* Genel Ayarlar */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #f8fafc;
+    color: #1e293b;
+    min-height: 100vh;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    line-height: 1.5;
+}
+
+/* Header Tasarımı */
+header {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.header-container {
+    max-width: 56rem;
+    margin: 0 auto;
+    padding: 0 1rem;
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.logo-icon {
+    background-color: #2563eb;
+    color: #ffffff;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+}
+
+.logo-text {
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: #2563eb;
+}
+
+.version-badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    background-color: #f1f5f9;
+    color: #475569;
+    padding: 0.25rem 0.625rem;
+    border-radius: 9999px;
+    border: 1px solid #e2e8f0;
+}
+
+/* Ana İçerik ve Kartlar */
+main {
+    max-width: 42rem;
+    width: 100%;
+    margin: 0 auto;
+    padding: 2.5rem 1rem;
+    flex-grow: 1;
+}
+
+.hero-area {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.hero-area h1 {
+    font-size: 1.875rem;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+.hero-area p {
+    margin-top: 0.75rem;
+    color: #64748b;
+}
+
+/* Sekme (Tab) Butonları */
+.tab-wrapper {
+    display: flex;
+    background-color: #e2e8f0;
+    padding: 0.25rem;
+    border-radius: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 0.625rem 0;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: transparent;
+    color: #475569;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.tab-btn.active {
+    background-color: #ffffff;
+    color: #0f172a;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.card {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+}
+
+.hidden { display: none !important; }
+
+/* Form Elemanları */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #334155;
+    margin-bottom: 0.5rem;
+}
+
+/* Sürükle Bırak / Yükleme Alanı */
+.upload-zone {
+    border: 2px dashed #cbd5e1;
+    background-color: rgba(248, 250, 252, 0.5);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    transition: border-color 0.2s;
+}
+
+.upload-zone:hover {
+    border-color: #2563eb;
+}
+
+.upload-zone input[type="file"] {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.upload-placeholder {
+    color: #64748b;
+}
+
+.upload-placeholder i {
+    font-size: 2rem;
+    color: #94a3b8;
+    margin-bottom: 0.5rem;
+}
+
+.file-chosen-wrapper {
+    color: #2563eb;
+    font-weight: 500;
+}
+
+/* Input ve Select Skini */
+select, input[type="text"], input[type="number"] {
+    width: 100%;
+    background-color: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 0.75rem;
+    padding: 0.625rem 1rem;
+    color: #1e293b;
+    font-size: 0.875rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+select:focus, input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* Slider Alanı */
+.slider-area {
+    background-color: #f8fafc;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    border: 1px solid #f1f5f9;
+}
+
+.slider-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.badge {
+    font-size: 0.75rem;
+    font-weight: 700;
+    background-color: #eff6ff;
+    color: #2563eb;
+    /* 🌟 Sabit genişlik yerine iç boşlukları (padding) ayarlayarak taşmayı önlüyoruz */
+    padding: 0.25rem 0.625rem; 
+    border-radius: 0.375rem;
+    /* 🌟 Metnin her zaman kutunun tam ortasında kalmasını sağlıyoruz */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.5rem; /* En az 3 basamaklı sayılar sığacak kadar alan bırakır */
+    text-align: center;
+}
+
+input[type="range"] {
+    width: 100%;
+    cursor: pointer;
+    accent-color: #2563eb;
+}
+
+/* Butonlar */
+.btn {
+    width: 100%;
+    color: #ffffff;
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.2s;
+}
+
+.btn-blue { background-color: #2563eb; box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2); }
+.btn-blue:hover { background-color: #1d4ed8; }
+.btn-indigo { background-color: #4f46e5; box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2); }
+.btn-indigo:hover { background-color: #4338ca; }
+.btn:active { transform: scale(0.99); }
+
+/* Footer */
+footer {
+    background-color: #ffffff;
+    border-top: 1px solid #e2e8f0;
+    padding: 1rem 0;
+    text-align: center;
+    font-size: 0.75rem;
+    color: #94a3b8;
+}
+
+/* ⏳ Yükleniyor Ekranı Tasarımı */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(15, 23, 42, 0.7); /* Slate-900 şeffaf arka plan */
+    backdrop-filter: blur(4px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    color: #ffffff;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    border-top-color: #3b82f6; /* Mavi yükleniyor çizgisi */
+    animation: spin 1s ease-in-out infinite;
+    margin-bottom: 1rem;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
