@@ -1,76 +1,72 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Çevrimiçi Dinamik Karekod Üretim İstasyonu</title>
-    <!-- Harici CSS Dosyamız -->
     <link rel="stylesheet" href="/css/style.css">
-    <!-- İkonlar İçin FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <!-- ⏳ Gizli Yükleniyor Ekranı -->
     <div id="loading-overlay" class="overlay hidden">
         <div class="spinner"></div>
-        <h3 style="font-weight: 700; font-size: 1.25rem;">Karekodunuz Üretiliyor...</h3>
-        <p style="font-size: 0.875rem; color: #cbd5e1; margin-top: 0.25rem;">Lütfen bekleyin, veri işleniyor ve görsel şablon hazırlanıyor.</p>
+        <h3 class="overlay-title">Karekodunuz Üretiliyor...</h3>
+        <p class="overlay-desc">Lütfen bekleyin, veri işleniyor ve görsel şablon hazırlanıyor.</p>
     </div>
 
-    <!-- 🌐 Üst Menü -->
     <header>
         <div class="header-container">
             <div class="logo-area">
                 <div class="logo-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
-                <span class="logo-text" style="color: #0f172a;">Medya Dönüştürücü</span>
+                <span class="logo-text">Medya Dönüştürücü</span>
             </div>
-            <a href="/" style="font-size: 0.875rem; color: #475569; text-decoration: none; font-weight: 500;"><i class="fa-solid fa-house"></i> Ana Panel</a>
+            <a href="/" class="back-link"><i class="fa-solid fa-house"></i> Ana Panel</a>
         </div>
     </header>
 
-    <!-- 🚀 Ana İçerik -->
-    <main>
-        <div class="hero-area">
-            <h1>Dinamik Karekod Üretici</h1>
-            <p>Web siteleri, dijital menüler veya metin içerikleri için anında taranabilir yüksek kalitede karekodlar oluşturun.</p>
+    <main class="container">
+        <div class="hero-area text-center">
+            <h1 class="title">Dinamik Karekod Üretici</h1>
+            <p class="subtitle">Web siteleri, dijital menüler veya bağlantılar için anında taranabilir yüksek kalitede karekodlar oluşturun.</p>
         </div>
 
         <section class="card">
-            <form action="/qr/generate" method="POST">
+            <form action="/qr/generate-qr" method="POST" id="qrForm">
                 
-                <!-- Bağlantı Girişi -->
                 <div class="form-group">
-                    <label for="link">Hedef Bağlantı (URL) veya Metin İçeriği</label>
-                    <input type="text" id="link" name="link" placeholder="https://orneklink.com/menu.pdf" required>
-                    <p style="font-size: 11px; color: #94a3b8; margin-top: 5px;">Karekodun yönlendireceği internet adresini eksiksiz (http/https dahil) yazın.</p>
+                    <label for="link">Hedef Bağlantı (URL)</label>
+-                    <input type="text" id="link" name="link" placeholder="https://orneklink.com/menu.pdf" required>
+                    <p class="input-tip">Karekodun yönlendireceği internet adresini eksiksiz (http:// veya https:// dahil) yazın.</p>
                 </div>
 
-                <!-- Buton -->
-                <button type="submit" class="btn btn-indigo">
+                <button type="submit" class="btn">
                     <i class="fa-solid fa-qrcode"></i> Karekod Oluştur
                 </button>
             </form>
         </section>
     </main>
 
-    <!-- 📜 Alt Bilgi -->
-    <footer>
+    <footer class="text-center" style="margin-top: 40px; color: var(--text-muted); font-size: 0.9rem;">
         &copy; 2026 Çevrimiçi Medya Dönüştürme Platformu.
     </footer>
 
-    <!-- 🛠️ Ön Yüz Kontrolleri -->
     <script>
-        document.querySelector('form').addEventListener('submit', function(e) {
+        document.getElementById('qrForm').addEventListener('submit', function(e) {
             const linkInput = document.getElementById('link').value.trim();
             
             if (linkInput === "") {
                 e.preventDefault();
-                alert("Lütfen geçerli bir bağlantı veya metin girin.");
+                alert("Lütfen geçerli bir bağlantı girin.");
                 return false;
             }
 
-            // Yükleniyor ekranını aç
+            if (!linkInput.startsWith('http://') && !linkInput.startsWith('https://')) {
+                e.preventDefault();
+                alert("⚠️ Lütfen 'http://' veya 'https://' ile başlayan geçerli bir internet adresi (URL) girin.");
+                return false;
+            }
+
             document.getElementById('loading-overlay').classList.remove('hidden');
             const btn = this.querySelector('button[type="submit"]');
             if (btn) {

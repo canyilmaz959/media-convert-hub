@@ -1,304 +1,329 @@
-/* Genel Ayarlar */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+/* Modern Renk Değişkenleri ve Reset */
+:root {
+    --bg-main: #f8fafc;
+    --bg-card: #ffffff;
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --border-color: #e2e8f0;
+    --border-hover: #cbd5e1;
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --danger: #ef4444;
+    --success: #22c55e;
+    --radius: 12px;
 }
 
 body {
-    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    background-color: #f8fafc;
-    color: #1e293b;
-    min-height: 100vh;
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    margin: 0;
+    padding: 0;
     line-height: 1.5;
 }
 
-/* Header Tasarımı */
-header {
-    background-color: #ffffff;
-    border-bottom: 1px solid #e2e8f0;
-    position: sticky;
-    top: 0;
-    z-index: 50;
+/* Sayfa Düzeni */
+.container {
+    max-width: 800px;
+    margin: 60px auto;
+    padding: 0 20px;
+    box-sizing: border-box;
 }
 
-.header-container {
-    max-width: 56rem;
-    margin: 0 auto;
-    padding: 0 1rem;
-    height: 4rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
+.text-center { text-align: center; }
 
-.logo-area {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-.logo-icon {
-    background-color: #2563eb;
-    color: #ffffff;
-    padding: 0.5rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
-}
-
-.logo-text {
-    font-weight: 700;
-    font-size: 1.25rem;
-    color: #2563eb;
-}
-
-.version-badge {
-    font-size: 0.75rem;
-    font-weight: 600;
-    background-color: #f1f5f9;
-    color: #475569;
-    padding: 0.25rem 0.625rem;
-    border-radius: 9999px;
-    border: 1px solid #e2e8f0;
-}
-
-/* Ana İçerik ve Kartlar */
-main {
-    max-width: 42rem;
-    width: 100%;
-    margin: 0 auto;
-    padding: 2.5rem 1rem;
-    flex-grow: 1;
-}
-
-.hero-area {
-    text-align: center;
-    margin-bottom: 2rem;
-}
-
-.hero-area h1 {
-    font-size: 1.875rem;
+/* Başlık Grubu */
+.title {
+    font-size: 2.5rem;
     font-weight: 800;
-    color: #0f172a;
+    color: var(--text-main);
+    margin: 0 0 8px 0;
+    letter-spacing: -0.025em;
 }
 
-.hero-area p {
-    margin-top: 0.75rem;
-    color: #64748b;
+.subtitle {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    margin: 0 0 40px 0;
 }
 
-/* Sekme (Tab) Butonları */
-.tab-wrapper {
+/* Navigasyon / Üst Bar */
+.nav-bar {
     display: flex;
-    background-color: #e2e8f0;
-    padding: 0.25rem;
-    border-radius: 0.75rem;
-    margin-bottom: 1.5rem;
-}
-
-.tab-btn {
-    flex: 1;
-    padding: 0.625rem 0;
-    font-size: 0.875rem;
-    font-weight: 500;
-    border-radius: 0.5rem;
-    border: none;
-    cursor: pointer;
-    transition: all 0.2s;
-    background: transparent;
-    color: #475569;
-    display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
+    margin-bottom: 24px;
 }
 
-.tab-btn.active {
-    background-color: #ffffff;
-    color: #0f172a;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+.back-link {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.2s;
+}
+
+.back-link:hover {
+    color: var(--primary-hover);
+}
+
+.version-tag {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    background: #e2e8f0;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+/* Kart Yapıları */
+.card-grid {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
 }
 
 .card {
-    background-color: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 1rem;
-    padding: 1.5rem;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 32px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    box-sizing: border-box;
 }
 
-.hidden { display: none !important; }
+/* Ana Sayfadaki Link Kartları */
+a.card-nav {
+    width: 340px;
+    text-decoration: none;
+    color: inherit;
+    text-align: left;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+
+a.card-nav:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 20px -3px rgba(0, 0, 0, 0.08);
+    border-color: var(--border-hover);
+}
+
+.card-icon {
+    font-size: 2.25rem;
+    margin-bottom: 16px;
+}
+
+.card-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin: 0 0 10px 0;
+}
+
+.card-desc {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin: 0;
+    line-height: 1.6;
+}
 
 /* Form Elemanları */
 .form-group {
-    margin-bottom: 1.5rem;
+    margin-bottom: 24px;
+    text-align: left;
 }
 
-.form-group label {
+label {
     display: block;
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: #334155;
-    margin-bottom: 0.5rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #475569;
+    font-size: 0.9rem;
 }
 
-/* Sürükle Bırak / Yükleme Alanı */
-.upload-zone {
-    border: 2px dashed #cbd5e1;
-    background-color: rgba(248, 250, 252, 0.5);
-    border-radius: 0.75rem;
-    padding: 1.5rem;
-    text-align: center;
-    cursor: pointer;
-    position: relative;
-    transition: border-color 0.2s;
-}
-
-.upload-zone:hover {
-    border-color: #2563eb;
-}
-
-.upload-zone input[type="file"] {
-    position: absolute;
-    inset: 0;
+input[type="file"],
+input[type="text"],
+select {
     width: 100%;
-    height: 100%;
-    opacity: 0;
+    padding: 12px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 0.95rem;
+    color: var(--text-main);
+    background-color: var(--bg-card);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input[type="file"] {
+    background: #f8fafc;
     cursor: pointer;
 }
 
-.upload-placeholder {
-    color: #64748b;
-}
-
-.upload-placeholder i {
-    font-size: 2rem;
-    color: #94a3b8;
-    margin-bottom: 0.5rem;
-}
-
-.file-chosen-wrapper {
-    color: #2563eb;
-    font-weight: 500;
-}
-
-/* Input ve Select Skini */
-select, input[type="text"], input[type="number"] {
-    width: 100%;
-    background-color: #ffffff;
-    border: 1px solid #cbd5e1;
-    border-radius: 0.75rem;
-    padding: 0.625rem 1rem;
-    color: #1e293b;
-    font-size: 0.875rem;
+input[type="text"]:focus,
+select:focus {
     outline: none;
-    transition: border-color 0.2s;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 
-select:focus, input:focus {
-    border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-}
-
-/* Slider Alanı */
-.slider-area {
-    background-color: #f8fafc;
-    padding: 1rem;
-    border-radius: 0.75rem;
-    border: 1px solid #f1f5f9;
-}
-
-.slider-header {
+.flex-group {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.5rem;
+    gap: 16px;
 }
 
-.badge {
-    font-size: 0.75rem;
-    font-weight: 700;
-    background-color: #eff6ff;
-    color: #2563eb;
-    /* 🌟 Sabit genişlik yerine iç boşlukları (padding) ayarlayarak taşmayı önlüyoruz */
-    padding: 0.25rem 0.625rem; 
-    border-radius: 0.375rem;
-    /* 🌟 Metnin her zaman kutunun tam ortasında kalmasını sağlıyoruz */
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 2.5rem; /* En az 3 basamaklı sayılar sığacak kadar alan bırakır */
-    text-align: center;
-}
-
-input[type="range"] {
-    width: 100%;
-    cursor: pointer;
-    accent-color: #2563eb;
+.flex-item {
+    flex: 1;
 }
 
 /* Butonlar */
 .btn {
     width: 100%;
-    color: #ffffff;
-    font-weight: 600;
-    padding: 0.75rem 1rem;
-    border-radius: 0.75rem;
+    background-color: var(--primary);
+    color: white;
     border: none;
+    padding: 14px;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 8px;
     cursor: pointer;
-    display: flex;
-    align-items: center;
+    transition: background-color 0.2s, transform 0.1s;
+    display: inline-flex;
     justify-content: center;
-    gap: 0.5rem;
-    transition: all 0.2s;
+    align-items: center;
+    gap: 8px;
 }
 
-.btn-blue { background-color: #2563eb; box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2); }
-.btn-blue:hover { background-color: #1d4ed8; }
-.btn-indigo { background-color: #4f46e5; box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2); }
-.btn-indigo:hover { background-color: #4338ca; }
-.btn:active { transform: scale(0.99); }
+.btn:hover { background-color: var(--primary-hover); }
+.btn:active { transform: scale(0.98); }
 
-/* Footer */
-footer {
-    background-color: #ffffff;
-    border-top: 1px solid #e2e8f0;
-    padding: 1rem 0;
-    text-align: center;
-    font-size: 0.75rem;
-    color: #94a3b8;
+/* Sonuç Sayfası CSS Yapısı */
+.result-box {
+    margin-top: 24px;
+    padding: 20px;
+    border: 2px dashed var(--border-color);
+    border-radius: var(--radius);
+    background: #f8fafc;
 }
 
-/* ⏳ Yükleniyor Ekranı Tasarımı */
+.result-preview {
+    max-width: 100%;
+    max-height: 300px;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+}
+
+/* Uyarı ve Hata Mesajları */
+.alert-box {
+    padding: 24px;
+    border-radius: var(--radius);
+    background-color: #fef2f2;
+    border: 1px solid #fee2e2;
+    color: #991b1b;
+}
+
+.alert-title { font-size: 1.5rem; margin-top: 0; color: #7f1d1d; }
+
+.hidden {
+    display: none !important;
+}
+
 .overlay {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(15, 23, 42, 0.7); /* Slate-900 şeffaf arka plan */
-    backdrop-filter: blur(4px);
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(15, 23, 42, 0.9); /* Slate 900 renginde %90 opaklık */
+    z-index: 9999; /* Sayfadaki her şeyin en üstünde durması için */
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    z-index: 9999;
+    justify-content: center;
     color: #ffffff;
+    backdrop-filter: blur(4px); /* Arka planı hafifçe bulandırır, çok şık durur */
 }
 
 .spinner {
-    width: 50px;
-    height: 50px;
-    border: 5px solid rgba(255, 255, 255, 0.2);
+    width: 48px;
+    height: 48px;
+    border: 5px solid rgba(255, 255, 255, 0.1);
+    border-top: 5px solid var(--primary, #2563eb); /* Bizim ana mavi renk */
     border-radius: 50%;
-    border-top-color: #3b82f6; /* Mavi yükleniyor çizgisi */
-    animation: spin 1s ease-in-out infinite;
-    margin-bottom: 1rem;
+    animation: spin 1s linear infinite; /* Kesintisiz dönme animasyonu */
+    margin-bottom: 16px;
+}
+
+.overlay-title {
+    color: #ffffff !important;
+    margin: 0 0 6px 0 !important;
+}
+
+.overlay-desc {
+    color: #94a3b8 !important;
+    margin: 0 !important;
 }
 
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+header {
+    background-color: var(--bg-card);
+    border-bottom: 1px solid var(--border-color);
+    padding: 16px 0;
+    width: 100%;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+}
+
+.header-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-icon {
+    background-color: rgba(37, 99, 235, 0.1); /* Hafif mavi şeffaf arka plan */
+    color: var(--primary);
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+}
+
+.logo-text {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--text-main);
+    letter-spacing: -0.01em;
+}
+
+.hero-area {
+    margin-top: 40px;
+    margin-bottom: 30px;
+}
+
+.input-tip {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 6px;
 }

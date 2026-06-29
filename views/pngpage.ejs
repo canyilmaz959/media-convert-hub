@@ -3,156 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Görsel Dönüştürme ve Arka Plan Temizleme İstasyonu</title>
     <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Görsel Format Dönüştürücü</title>
 </head>
 <body>
 
-    <div id="loading-overlay" class="overlay hidden">
-        <div class="spinner"></div>
-        <h3 style="font-weight: 700; font-size: 1.25rem;">Dosyanız İşleniyor...</h3>
-        <p style="font-size: 0.875rem; color: #cbd5e1; margin-top: 0.25rem;">Lütfen bekleyin, dönüşüm saniyeler içinde tamamlanacaktır.</p>
+    <div class="container">
+    <div class="nav-bar">
+        <a href="/" class="back-link">← Ana Panel</a>
+        <span class="version-tag">Hızlı Dönüştürme</span>
     </div>
 
-    <!-- 🌐 Üst Menü -->
-    <header>
-        <div class="header-container">
-            <div class="logo-area">
-                <div class="logo-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
-                <span class="logo-text" style="color: #0f172a;">Medya Dönüştürücü</span>
+    <div class="card">
+        <h2 class="title text-center" style="font-size: 1.75rem;">Görsel Format Dönüştürücü</h2>
+        <p class="subtitle text-center">Dosyanızı seçin, hedef formatı belirleyin ve anında indirin.</p>
+
+        <form action="/gorsel/convert" method="POST" enctype="multipart/form-data" id="convertForm">
+            <div class="form-group">
+                <label for="imageInput">Yüklenecek Dosya (PNG, JPG, WebP, SVG):</label>
+                <input type="file" name="image" id="imageInput" required accept=".png,.jpg,.jpeg,.webp,.svg">
             </div>
-            <a href="/" style="font-size: 0.875rem; color: #475569; text-decoration: none; font-weight: 500;"><i class="fa-solid fa-house"></i> Ana Panel</a>
-        </div>
-    </header>
 
-    <!-- 🚀 Ana İçerik -->
-    <main>
-        <div class="hero-area">
-            <h1>Görsel Format İşlemleri</h1>
-            <p>Yüklediğiniz görsel türüne uygun optimizasyon veya format değiştirme işlemini seçin.</p>
-        </div>
-
-        <section class="card">
-            <form action="/gorsel/convert" method="POST" enctype="multipart/form-data">
-                
-                <!-- Dosya Seçme -->
-                <div class="form-group">
-                    <label>Dönüştürülecek Dosya</label>
-                    <div class="upload-zone">
-                        <input type="file" name="image" required onchange="updateFileName(this)">
-                        <div class="upload-placeholder" id="upload-placeholder">
-                            <i class="fa-solid fa-cloud-arrow-up"></i>
-                            <p>Dosyayı buraya sürükleyin veya seçmek için tıklayın</p>
-                        </div>
-                        <div class="hidden file-chosen-wrapper" id="file-chosen-wrapper">
-                            <i class="fa-solid fa-file-image" style="font-size: 2rem; margin-bottom: 0.5rem;"></i>
-                            <p id="file-chosen-name"></p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- İşlem Seçimi -->
-                <div class="form-group">
-                    <label for="action">Uygulanacak İşlem</label>
-                    <select id="action" name="action" onchange="toggleTolerance(this.value)">
-                        <option value="jpg_to_png">JPG → Arka Planı Şeffaf PNG (Standart Mod)</option>
-                        <option value="png_duzelt">PNG → Kusursuz Kenar Yumuşatma (Profesyonel Mod)</option>
-                        <option value="svg_to_png">SVG → Yüksek Kaliteli PNG Dönüşümü</option>
-                        <option value="webp_to_png">WebP → Standart PNG Dönüşümü</option>
+            <div class="flex-group form-group">
+                <div class="flex-item">
+                    <label for="fromFormat">Mevcut Format:</label>
+                    <select name="fromFormat" id="fromFormat" required>
+                        <option value="png">PNG</option>
+                        <option value="jpg">JPG / JPEG</option>
+                        <option value="webp">WebP</option>
+                        <option value="svg">SVG</option>
                     </select>
                 </div>
 
-                <!-- Hassasiyet Ayarı -->
-                <div class="form-group" id="tolerance-area">
-                    <div class="slider-area">
-                        <div class="slider-header">
-                            <label for="tolerance">Temizleme Hassasiyeti</label>
-                            <span id="tolerance-val" class="badge">240</span>
-                        </div>
-                        <input type="range" id="tolerance" name="tolerance" min="150" max="255" value="240" oninput="document.getElementById('tolerance-val').innerText = this.value">
-                        <p style="font-size: 11px; color: #94a3b8; margin-top: 5px;">Görsel kenarlarındaki piksellerin temizlenme derinliğini ayarlar.</p>
-                    </div>
+                <div class="flex-item">
+                    <label for="toFormat">Hedef Format:</label>
+                    <select name="toFormat" id="toFormat" required>
+                        <option value="jpg">JPG</option>
+                        <option value="png">PNG</option>
+                        <option value="webp">WebP</option>
+                        <option value="svg">SVG</option>
+                    </select>
                 </div>
+            </div>
 
-                <!-- Buton -->
-                <button type="submit" class="btn btn-blue">
-                    <i class="fa-solid fa-gears"></i> İşlemi Başlat
-                </button>
-            </form>
-        </section>
-    </main>
+            <button type="submit" class="btn">Dönüştür ve İndir</button>
+        </form>
+    </div>
+</div>
 
-    <footer>
-        &copy; 2026 Çevrimiçi Medya Dönüştürme Platformu.
-    </footer>
-
-    <!-- 🛠️ Ön Yüz Kontrolleri -->
     <script>
-        function updateFileName(input) {
-            if (input.files && input.files.length > 0) {
-                document.getElementById('upload-placeholder').classList.add('hidden');
-                document.getElementById('file-chosen-wrapper').classList.remove('hidden');
-                document.getElementById('file-chosen-name').innerText = input.files[0].name;
-                checkFormatCompatibility();
-            }
+        const imageInput = document.getElementById('imageInput');
+    const fromFormatSelect = document.getElementById('fromFormat');
+
+    imageInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const fileName = file.name.toLowerCase();
+        const fileExtension = fileName.split('.').pop();
+
+        const finalExtension = fileExtension === 'jpeg' ? 'jpg' : fileExtension;
+
+        const hasOption = Array.from(fromFormatSelect.options).some(option => option.value === finalExtension);
+
+        if (hasOption) {
+            fromFormatSelect.value = finalExtension;
+            console.log(`[Sistem Algıladı] Yüklenen dosya türü otomatik seçildi: ${finalExtension.toUpperCase()}`);
         }
+    });
+        document.getElementById('convertForm').addEventListener('submit', function(e) {
+            const fromFmt = document.getElementById('fromFormat').value;
+            const toFmt = document.getElementById('toFormat').value;
 
-        function toggleTolerance(value) {
-            const area = document.getElementById('tolerance-area');
-            area.style.display = (value === 'svg_to_png' || value === 'webp_to_png') ? 'none' : 'block';
-            checkFormatCompatibility();
-        }
-
-        function checkFormatCompatibility() {
-            const fileInput = document.querySelector('input[name="image"]');
-            const actionSelect = document.getElementById('action');
-            
-            if (!fileInput.files || fileInput.files.length === 0) return true;
-            
-            const fileName = fileInput.files[0].name.toLowerCase();
-            const fileExt = fileName.split('.').pop();
-            const selectedAction = actionSelect.value;
-            
-            let isCompatible = true;
-            let errorMessage = "";
-
-            if (selectedAction === 'jpg_to_png' && !(fileExt === 'jpg' || fileExt === 'jpeg')) {
-                isCompatible = false;
-                errorMessage = "Seçtiğiniz işlem sadece JPG/JPEG dosyalarını destekler.";
-            } else if (selectedAction === 'png_duzelt' && fileExt !== 'png') {
-                isCompatible = false;
-                errorMessage = "Kenar yumuşatma işlemi sadece PNG dosyalarına uygulanabilir.";
-            } else if (selectedAction === 'svg_to_png' && fileExt !== 'svg') {
-                isCompatible = false;
-                errorMessage = "SVG dönüşümü için lütfen bir .svg dosyası seçin.";
-            } else if (selectedAction === 'webp_to_png' && fileExt !== 'webp') {
-                isCompatible = false;
-                errorMessage = "WebP dönüşümü için lütfen bir .webp dosyası seçin.";
-            }
-
-            if (!isCompatible) {
-                alert(errorMessage);
-                actionSelect.style.borderColor = "#ef4444";
-                return false;
-            } else {
-                actionSelect.style.borderColor = "#cbd5e1";
-                return true;
-            }
-        }
-
-        document.querySelector('form').addEventListener('submit', function(e) {
-            if (!checkFormatCompatibility()) {
+            if (fromFmt === toFmt) {
                 e.preventDefault();
-                return false;
-            }
-            document.getElementById('loading-overlay').classList.remove('hidden');
-            const btn = this.querySelector('button[type="submit"]');
-            if (btn) {
-                btn.disabled = true;
-                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> İşleniyor...';
+                alert('Hata: Kaynak format ile hedef format aynı olamaz! Lütfen farklı bir kombinasyon seçin.');
             }
         });
     </script>
+
 </body>
 </html>

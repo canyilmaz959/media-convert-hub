@@ -3,71 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- 🚀 SEO Yapılandırması -->
-    <title>Çevrimiçi Medya Dönüştürme ve Format Değiştirme Merkezi</title>
-    <meta name="description" content="Görsel, karekod ve medya dosyalarınızı saniyeler içinde kalitesini kaybetmeden dönüştürün. Ücretsiz, hızlı ve güvenli çevrimiçi dosya araçları.">
-    <meta name="keywords" content="görsel dönüştürücü, format değiştirme, png yapma, transparan yapma, karekod oluşturucu, ücretsiz medya araçları">
-    <meta name="robots" content="index, follow">
-
     <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
-        .tool-card { background: white; border: 1px solid #e2e8f0; border-radius: 1rem; padding: 2rem; text-decoration: none; color: inherit; transition: all 0.2s; display: flex; flex-direction: column; justify-content: space-between; }
-        .tool-card:hover { border-color: #2563eb; transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05); }
-        .tool-icon { width: 3rem; height: 3rem; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1rem; }
-        .icon-blue { background: #eff6ff; color: #2563eb; }
-        .icon-indigo { background: #e0e7ff; color: #4f46e5; }
-    </style>
+    <title>Medya İşlem Merkezi - Ana Panel</title>
 </head>
 <body>
 
-    <!-- 🌐 Üst Menü -->
-    <header>
-        <div class="header-container">
-            <div class="logo-area">
-                <div class="logo-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
-                <span class="logo-text" style="color: #0f172a;">Medya Dönüştürücü</span>
-            </div>
-            <span class="version-badge">Çevrimiçi İstasyon</span>
-        </div>
-    </header>
+    <div class="container text-center">
+    <h1 class="title">Çevrimiçi Medya İşlem Merkezi</h1>
+    <p class="subtitle">Görsellerinizi kalitesini kaybetmeden dönüştürün ve anında güvenli karekodlar oluşturun.</p>
+    
+    <div class="card-grid">
+        <a href="/pngpage" class="card card-nav">
+            <div class="card-icon">🎨</div>
+            <h3 class="card-title">Görsel Dönüştürücü</h3>
+            <p class="card-desc">PNG, JPG, WebP ve SVG formatındaki dosyalarınızı saniyeler içinde dilediğiniz formata dönüştürün.</p>
+        </a>
 
-    <!-- 🚀 Ana İçerik -->
-    <main>
-        <div class="hero-area">
-            <h1>Medya İşlem ve Format Çözümleri</h1>
-            <p>İhtiyacınız olan işlem kategorisini seçerek hemen başlayın. Tüm işlemleriniz güvenli ve gizlilik standartlarına uygun olarak tamamlanır.</p>
-        </div>
-
-        <div class="grid-container">
-            <!-- 🖼️ Görsel Dönüştürücü Sayfası -->
-            <a href="/gorsel-donusturucu" class="tool-card">
-                <div>
-                    <div class="tool-icon icon-blue"><i class="fa-solid fa-image"></i></div>
-                    <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem;">Görsel İşlemleri</h2>
-                    <p style="font-size: 0.875rem; color: #64748b;">JPG, PNG, WEBP ve SVG dosyalarını dönüştürün, arka planları kusursuzca temizleyin.</p>
-                </div>
-                <span style="color: #2563eb; font-size: 0.875rem; font-weight: 600; margin-top: 1rem; display: inline-block;">Hemen Başla →</span>
-            </a>
-
-            <!-- 🔗 Karekod Üretici Sayfası -->
-            <a href="/karekod-ureticisi" class="tool-card">
-                <div>
-                    <div class="tool-icon icon-indigo"><i class="fa-solid fa-qrcode"></i></div>
-                    <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem;">Karekod Üretici</h2>
-                    <p style="font-size: 0.875rem; color: #64748b;">Gelişmiş bağlantı yönlendirmeleri ve dijital içerikler için hızlı karekodlar üretin.</p>
-                </div>
-                <span style="color: #4f46e5; font-size: 0.875rem; font-weight: 600; margin-top: 1rem; display: inline-block;">Hemen Başla →</span>
-            </a>
-        </div>
-    </main>
-
-    <!-- 📜 Alt Bilgi -->
-    <footer>
-        &copy; 2026 Çevrimiçi Medya Dönüştürme Platformu. Tüm hakları saklıdır. Dosyalarınız işlem sonrası otomatik olarak silinir.
-    </footer>
-
+        <a href="/qrpage" class="card card-nav">
+            <div class="card-icon">🔗</div>
+            <h3 class="card-title">Karekod (QR) Üretici</h3>
+            <p class="card-desc">Web siteleriniz, dijital menüleriniz veya metin içerikleriniz için yüksek kalitede taranabilir karekodlar oluşturun.</p>
+        </a>
+    </div>
+</div>
 </body>
 </html>
