@@ -4,9 +4,90 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/style.css">
-    <title>Document</title>
+    <title>Dosya Format Dönüştürücü</title>
 </head>
 <body>
+    <div class ="container">
+    <div class="nav-bar">
+        <a href="/" class="back-link">← Ana Panel</a>
+        <span class="version-tag">Hızlı Dönüştürme</span>
+    </div>
+
+    <div class ="card">
+        <h2 class="title text-center" style="font-size: 1.75rem;">Dosya Format Dönüştürücü</h2>
+        <p class="subtitle text-center">Dosyanızı seçin, hedef formatı belirleyin ve anında indirin.</p>
+
+        <form action="/dosya/convert" method="POST" enctype="multipart/form-data" id="convertForm">
+            <div class="form-group">
+                <label for="fileInput">Yüklenecek Dosya (PDF, DOCX, XLSX, PPTX):</label>
+                <input type="file" name="document" id="fileInput" required accept=".pdf,.docx,.xlsx,.pptx">
+            </div>
+
+            <div class="flex-group form-group">
+                <div class="flex-item">
+                    <label for="fromFormat">Mevcut Format:</label>
+                    <select name="fromFormat" id="fromFormat" required>
+                        <option value="pdf">PDF</option>
+                        <option value="docx">DOCX</option>
+                        <option value="xlsx">XLSX</option>
+                        <option value="pptx">PPTX</option>
+                    </select>
+                </div>
+
+                <div class="flex-item">
+                    <label for="toFormat">Hedef Format:</label>
+                    <select name="toFormat" id="toFormat" required>
+                        <option value="pdf">PDF</option>
+                        <option value="docx">DOCX</option>
+                        <option value="xlsx">XLSX</option>
+                        <option value="pptx">PPTX</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit" class="btn">Dönüştür ve İndir</button>
+        </form>
+    </div>
+
     
 </body>
+
+
+<script>
+    const fileInput = document.getElementById('fileInput');
+    const fromFormatSelect = document.getElementById('fromFormat');
+
+    fileInput.addEventListener('change', function(e) {
+        const document = e.target.files[0];
+        if (!document) return;
+
+        const fileName = document.name.toLowerCase();
+        const fileExtension = fileName.split('.').pop();
+
+        const finalExtension = fileExtension === 'docx' ? 'doc' : fileExtension;
+
+        const hasOption = Array.from(fromFormatSelect.options).some(option => option.value === finalExtension);
+        if (hasOption) {
+            fromFormatSelect.value = finalExtension;
+            console.log(`Mevcut format seçildi: ${finalExtension}.toUpperCase()}`);
+        } else {
+            fromFormatSelect.value = '';
+        }
+
+    });
+
+    document.getElementById('convertForm').addEventListener('submit', function(e) {
+        const fromFmt = document.getElementById('fromFormat').value;
+        const toFmt = document.getElementById('toFormat').value;
+
+        if (fromFmt === toFmt) {
+            e.preventDefault();
+            alert('Mevcut format ve hedef format aynı olamaz. Lütfen farklı bir hedef format seçin.');
+        }
+    });
+
+
+</script>
+
+
 </html>

@@ -1,12 +1,12 @@
-const exp = require('express');
-const router = exp.router();
+const express = require('express');
+const router = express.Router();
 const { spawn } = require ('child_process');
 const fs = require('fs');
 const path = require('path');
 const multer = require ('multer');
 
-const allowedExtensions = ['.pdf', '.docx', '.txt', '.xlsx'];
-const allowedMimeTypes = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
+const allowedExtensions = ['.pdf', '.docx', '.pptx', '.xlsx'];
+const allowedMimeTypes = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'pptx', 'application/vnd.openxmlformats-officedocument.presentationml.presentation'];
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -33,7 +33,7 @@ router.post('/convert', upload.single('document'), (req, res) => {
     const fromFormat = req.body.fromFormat.toLowerCase();
     const toFormat = req.body.toFormat.toLowerCase();
 
-    if (!req.file) return res.status(400).send("Lütfen bir dosya yükletin!");
+    if (!req.file) return res.status(400).send("Lütfen bir dosya yükleyin!");
 
     const inputPath = path.resolve(req.file.path);
     const outputFilename = 'output ' + Date.now() + toFormat;
@@ -41,7 +41,7 @@ router.post('/convert', upload.single('document'), (req, res) => {
 
     const pythonCmd = process.platform === 'win32' ? 'python' : 'python3';
 
-    scriptPath = path.resolve('scripts/document-generate/', document-main.py);
+    scriptPath = path.resolve('scripts/document-generate, document-main.py');
 
     const pythonProcess = spawn(pythonCmd, [scriptPath, inputPath, outputPath, fromFormat, toFormat]);
 
@@ -68,3 +68,5 @@ router.post('/convert', upload.single('document'), (req, res) => {
      })
 
 })
+
+module.exports = router;

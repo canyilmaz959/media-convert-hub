@@ -9,6 +9,7 @@ const KONTROL_PERIYODU_MS = 10 * 60 * 1000;
 
 const gorsel_routes = require('./routes/gorsel_routes');
 const qr_routes = require('./routes/qr_routes');
+const belge_routes = require('./routes/belge_routes');
 
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
@@ -28,8 +29,13 @@ app.get('/qrpage', (req, res) => {
     res.render('qrpage');
 });
 
+app.get('/filepage', (req, res) => {
+    res.render('filepage');
+});
+
 app.use('/gorsel', gorsel_routes);
 app.use('/qr', qr_routes);
+app.use('/dosya', belge_routes);
 
 app.listen(PORT, () => {
     console.log(`Sunucu aktif: http://localhost:${PORT} `);
