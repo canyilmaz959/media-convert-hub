@@ -47,10 +47,20 @@
             <p>İstediğiniz dönüşüm ve optimizasyon işlemleri tamamlandı. Güvenle indirebilirsiniz.</p>
         </div>
 
-        <div class="card">
-            <div class="preview-box">
-                <img src="<%= outputPath %>" alt="Hazırlanan Medya Dosyası" class="preview-img">
-            </div>
+        <div class="card" style="margin-top: 30px;">
+    
+    <% if (isImage) { %>
+        <div class="image-preview-container" style="margin-bottom: 25px;">
+            <p class="subtitle">Dönüştürülen Görsel Önizlemesi:</p>
+            <img src="<%= outputPath %>" alt="Başarıyla Dönüştürülen Görsel" style="max-width: 100%; max-height: 400px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+        </div>
+    <% } else { %>
+        <div class="document-preview-container" style="margin-bottom: 25px; padding: 30px; background-color: #f8fafc; border-radius: 8px; border: 2px dashed #e2e8f0; display: inline-block;">
+            <div style="font-size: 3.5rem; margin-bottom: 10px;">📄</div>
+            <p style="font-weight: bold; color: #1e293b; margin: 0;"><%= outputFilename %></p>
+            <p class="subtitle" style="font-size: 0.875rem; margin-top: 5px;">Belgeniz güvenle hazırlandı.</p>
+        </div>
+    <% } %>
 
             <div class="action-area">
                 <a href="/" class="btn btn-secondary">
@@ -64,7 +74,7 @@
     </main>
 
     <footer>
-        &copy; Can Yılmaz.
+        &copy; Medya Dönüştürücü.
     </footer>
 
 </body>
