@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  web_sunucusu:
+    build: .
+    container_name: format_sunucu
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      NODE_ENV: "development"
+      GOTENBERG_URL: "http://gotenberg_servis:3000"
+    depends_on:
+      - gotenberg_servis
+
+  gotenberg_servis:
+    image: gotenberg/gotenberg:8  
+    container_name: gotenberg_motoru
+    ports:
+      - "3001:3000"
+    command:
+      - "gotenberg"
+      - "--chromium-disable-javascript=false"

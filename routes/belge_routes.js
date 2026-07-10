@@ -4,6 +4,10 @@ const { spawn } = require ('child_process');
 const fs = require('fs');
 const path = require('path');
 const multer = require ('multer');
+const axios = require('axios');
+const FormData = require('form-data');
+
+const GOTENBERG_URL = process.env.GOTENBERG_URL || 'http://localhost:3000';
 
 const allowedExtensions = ['.pdf', '.docx', '.pptx', '.xlsx'];
 const allowedMimeTypes = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'pptx', 'application/vnd.openxmlformats-officedocument.presentationml.presentation'];
@@ -30,80 +34,65 @@ const upload = multer({
     }
 });
 
-router.post('/convert', upload.single('document'), (req, res) => {
+router.post('/convert', upload.single('document'), async (req, res) => {
     const fromFormat = req.body.fromFormat.toLowerCase();
     const toFormat = req.body.toFormat.toLowerCase();
 
     if (!req.file) return res.status(400).send("Lütfen bir dosya yükleyin!");
 
-    const uploadsDir = '/app/uploads';
-    const inputPath = path.join(uploadsDir, req.file.filename);
-    const profilID = req.file.filename;
+    const inputPath = req.file.path;
     const originalName = path.basename(req.file.filename, path.extname(req.file.filename));
-    const outputFilename = originalName + '.' + toFormat;
-    const outputPath = path.join(uploadsDir, outputFilename);
 
-    setTimeout(() => {
+    const outputFilename = originalName + '.' + 'pdf';
+    const outputPath = path.join(__dirname, '../uploads', outputFilename);
 
-        try{
-            fs.chmodSync(inputPath, 0o777);
-        } catch (chmodError) {
-            console.error('Dosya izinleri değiştirilemedi:', chmodError);
+
+    try{
+        const form = new FormData();
+
+        form.append('files', fs.createReadStream(inputPath), req.file.originalname);
+        console.log(`dosya gotenberge gönderiliyor: ${req.file.originalname}`);
+
+        const response = await axios.post(`${GOTENBERG_URL}/forms/libreoffice/convert`, form, {
+            headers: {
+                ...form.getHeaders(),
+            },
+            responseType: 'stream'
+        });
+
+        const writer = fs.createWriteStream(outputPath);
+        response.data.pipe(writer);
+
+        await new Promise((resolve, reject) =>{
+            writer.on('finish', resolve);
+            writer.on('error', reject);
+        });
+
+        console.log('çıktı dosyası basıldı:', outputFilename);
+
+        if(fs.existsSync(inputPath)) {
+            fs.unlinkSync(inputPath);          
         }
 
-        const libreCmd = process.platform === 'win32' ? 'soffice' : 'libreoffice';
+        if (toFormat === 'pdf') {
+            return res.render('result', {
+                outputPath: '/uploads/' + outputFilename,
+                outputFilename: outputFilename,
+                isImage: false
+            });
+        } else {
+            return res.send(`gotenberg başarıyla çalıştı pdf hazır scriptler bekleniyor...(pdf to ${toFormat})`);
+        }
 
-        const processRunner = spawn(libreCmd, [
-            '--headless',
-            '--invisible',
-            '-env:UserInstallation=file:///tmp/libre_profile',
-            '--convert-to', toFormat, inputPath,
-            '--outdir', uploadsDir
-        ]);
+    } catch (error) {
+        console.error('Gotenberg ile dönüştürme sırasında hata oluştu:', error.message);
+        if(fs.existsSync(inputPath)) {fs.unlinkSync(inputPath);}
 
-        let processError = '';
-
-        processRunner.stderr.on('data', (data) => {
-            processError += data.toString();
-        });
-
-        processRunner.stdout.on('data', (data) => {
-            processError += data.toString();
-        });
-
-        processRunner.on('close', (code) => {
-
-        setTimeout(() => {
-            if ( code == 0 && fs.existsSync(outputPath)) {
-
-                    fs.unlink(inputPath, (err) => {
-                        if (err) console.error('Girdi dosyası silinemedi:', err);
-                        else console.log('Girdi dosyası başarıyla silindi:', inputPath);
-                    });
-                
-
-                const isImage = ['jpg', 'jpeg', 'png', 'svg', 'webp'].includes(toFormat);
-
-                return res.render('result', { 
-                    outputPath: '/uploads/' + outputFilename,
-                    outputFilename: outputFilename,
-                    isImage: isImage
-                });
-             } else {
-                
-                console.error('LibreOffice çıktı üretmedi. code:', code, 'stderr:', processError);
-                return res.status(500).send(`
-                <div style="font-family: sans-serif; text-align: center; margin-top: 50px; color: #334155;">
-                    <h2>İşlem Sırasında Bir Aksaklık Oluştu</h2>
-                    <p>Lütfen farklı bir belge ile tekrar deneyin.</p>
-                    <a href="/" style="color: #2563eb; text-decoration: none; font-weight: bold;">← Ana Sayfaya Dön</a>
-                </div>
-            `);
-            }
-        }, 500);
-        });
-    }, 200);
+        const isImage = ['jpg', 'jpeg', 'png', 'svg', 'webp'].includes(toFormat);
+        }
 });
 
+
+            
 
 module.exports = router;
