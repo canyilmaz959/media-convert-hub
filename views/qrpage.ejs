@@ -3,40 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Çevrimiçi Dinamik Karekod Üretim İstasyonu</title>
+    <title>Çevrimiçi Karekod Üretim İstasyonu</title>
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <div id="loading-overlay" class="overlay hidden">
-        <div class="spinner"></div>
-        <h3 class="overlay-title">Karekodunuz Üretiliyor...</h3>
-        <p class="overlay-desc">Lütfen bekleyin, veri işleniyor ve görsel şablon hazırlanıyor.</p>
-    </div>
-
-    <header>
-        <div class="header-container">
-            <div class="logo-area">
-                <div class="logo-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
-                <span class="logo-text">Medya Dönüştürücü</span>
-            </div>
-            <a href="/" class="back-link"><i class="fa-solid fa-house"></i> Ana Panel</a>
+    <div class="container">
+        <div style="margin-bottom: 1.5rem;">
+            <a href="/" style="color: var(--text-muted); font-size: 0.9rem;"><i class="fa-solid fa-arrow-left"></i> Ana Panel</a>
         </div>
-    </header>
-
-    <main class="container">
-        <div class="hero-area text-center">
+    
+        <div style="text-align: center;">
             <h1 class="title">Dinamik Karekod Üretici</h1>
-            <p class="subtitle">Web siteleri, dijital menüler veya bağlantılar için anında taranabilir yüksek kalitede karekodlar oluşturun.</p>
+            <p class="subtitle">Web siteleri veya bağlantılar için yüksek kalitede karekodlar oluşturun.</p>
         </div>
+    
 
         <section class="card">
+
+            <div id="loading-overlay" class="overlay hidden">
+                <div class="spinner"></div>
+                <h3 class="overlay-title">Karekodunuz Üretiliyor...</h3>
+                <p class="overlay-desc">Lütfen bekleyin, veri işleniyor ve görsel şablon hazırlanıyor.</p>
+            </div>
+
             <form action="/qr/generate-qr" method="POST" id="qrForm">
                 
                 <div class="form-group">
                     <label for="link">Hedef Bağlantı (URL)</label>
--                    <input type="text" id="link" name="link" placeholder="https://orneklink.com/menu.pdf" required>
+                    <input type="text" id="link" name="link" placeholder="https://orneklink.com/" required>
                     <p class="input-tip">Karekodun yönlendireceği internet adresini eksiksiz (http:// veya https:// dahil) yazın.</p>
                 </div>
 
@@ -45,11 +41,9 @@
                 </button>
             </form>
         </section>
-    </main>
+    </div>
 
-    <footer class="text-center" style="margin-top: 40px; color: var(--text-muted); font-size: 0.9rem;">
-        &copy; 2026 Çevrimiçi Medya Dönüştürme Platformu.
-    </footer>
+    <footer>&copy; 2026 Çevrimiçi Medya Dönüştürme Platformu.</footer>
 
     <script>
         document.getElementById('qrForm').addEventListener('submit', function(e) {

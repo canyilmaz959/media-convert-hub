@@ -5,33 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/style.css">
     <title>Dosya Format Dönüştürücü</title>
+    <style>
+        input[type="file"], select {
+            width: 100%; padding: 0.8rem 1rem; background-color: var(--bg-color);
+            border: 1px solid var(--border-color); border-radius: 8px;
+            color: var(--text-main); box-sizing: border-box; font-size: 0.95rem; cursor: pointer;
+        }
+        input[type="file"]:focus, select:focus { outline: none; border-color: var(--accent-color); }
+        .flex-group { display: flex; gap: 1rem; }
+        .flex-item { flex: 1; }
+    </style>
 </head>
 <body>
+
     <div class ="container">
-    <div class="nav-bar">
-        <a href="/" class="back-link">← Ana Panel</a>
-        <span class="version-tag">Hızlı Dönüştürme</span>
-    </div>
+        <div style="margin-bottom : 1.5rem;">
+            <a href="/" style="color: var(--text-muted); font-size: 0.9rem;"><i class="fa-solid fa-arrow-left"></i> Ana Panel</a>
+        </div>
 
     <div class ="card">
-        <h2 class="title text-center" style="font-size: 1.75rem;">Dosya Format Dönüştürücü</h2>
+
+        <div id="loading-overlay" class="overlay hidden">
+            <div class="spinner"></div>
+            <h3 class="overlay-title">Belgeniz İşleniyor...</h3>
+            <p class="overlay-desc">Lütfen bekleyin, veri işleniyor ve format dönüştürülüyor.</p>
+        </div>
+
+        <h2 class="title text-center">Dosya Format Dönüştürücü</h2>
         <p class="subtitle text-center">Dosyanızı seçin, hedef formatı belirleyin ve anında indirin.</p>
 
         <form action="/dosya/convert" method="POST" enctype="multipart/form-data" id="convertForm">
             <div class="form-group">
-                <label for="fileInput">Yüklenecek Dosya (PDF, DOCX, XLSX, PPTX):</label>
-                <input type="file" name="document" id="fileInput" required accept=".pdf,.docx,.xlsx,.pptx">
+                <label for="fileInput">Yüklenecek Dosya (PDF, DOCX, POTX, ODP, PPTX):</label>
+                <input type="file" name="document" id="fileInput" required accept=".pdf,.docx,.potx,.odp,.pptx">
             </div>
 
             <div class="flex-group form-group">
                 <div class="flex-item">
                     <label for="fromFormat">Mevcut Format:</label>
-                    <select name="fromFormat" id="fromFormat" required>
-                        <option value="pdf">PDF</option>
-                        <option value="docx">DOCX</option>
-                        <option value="xlsx">XLSX</option>
-                        <option value="pptx">PPTX</option>
-                    </select>
+                    <input type="text" name="fromFormat" id="fromFormat" readonly placeholder="Dosya bekleniyor..." style="background-color: rgba(255,255,255,0.05); color: var(--text-muted); cursor: not-allowed; text-transform: uppercase; font-weight: bold;">
                 </div>
 
                 <div class="flex-item">
@@ -39,19 +51,19 @@
                     <select name="toFormat" id="toFormat" required>
                         <option value="pdf">PDF</option>
                         <option value="docx">DOCX</option>
-                        <option value="xlsx">XLSX</option>
+                        <option value="potx">POTX</option>
+                        <option value="odp">ODP</option>
                         <option value="pptx">PPTX</option>
                     </select>
                 </div>
             </div>
 
-            <button type="submit" class="btn">Dönüştür ve İndir</button>
+            <button type="submit" class="btn"><i class="fa-solid fa-file-export"></i>Dönüştür ve İndir</button>
         </form>
     </div>
     </div>
 
-    
-</body>
+    <footer>&copy; 2026 Çevrimiçi Medya Dönüştürme Platformu.</footer>
 
 
 <script>
@@ -61,22 +73,16 @@
 
     fileInput.addEventListener('change', function(e) {
         const file = e.target.files[0];
-        if (!file) return;
+        if (!file){
+            fromFormatSelect.value = '';
+            return;
+        }
 
         const fileName = file.name.toLowerCase().trim();
-        const fileExtension = fileName.split('.').pop().trim();
+        let fileExtension = fileName.split('.').pop().trim();
 
-        const finalExtension = fileExtension === 'docx' ? 'docx' : fileExtension;
-
+        fromFormatSelect.value = fileExtension;
         console.log(`Yüklenen dosya: ${fileName}, Uzantı: ${fileExtension}`);
-
-        const hasOption = Array.from(fromFormatSelect.options).some(option => option.value === finalExtension);
-        if (hasOption) {
-            fromFormatSelect.value = finalExtension;
-            console.log(`Mevcut format seçildi: ${finalExtension.toUpperCase()}`);
-        } else {
-            fromFormatSelect.value = '';
-        }
 
         if (fromFormatSelect.value === toFormatSelect.value) {
             if(fileExtension === "pdf") {
@@ -96,11 +102,18 @@
         if (fromFmt === toFmt) {
             e.preventDefault();
             alert('Mevcut format ve hedef format aynı olamaz. Lütfen farklı bir hedef format seçin.');
+            return;
+        }
+
+        document.getElementById('loading-overlay').classList.remove('hidden');
+        const btn = this.querySelector('button[type="submit"]');
+        if(btn){
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> İşleniyor...';    
         }
     });
 
 
 </script>
-
-
+</body>
 </html>

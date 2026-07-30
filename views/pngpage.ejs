@@ -5,16 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/style.css">
     <title>Görsel Format Dönüştürücü</title>
+    <style>
+        input[type="file"], select {
+            width: 100%; padding: 0.8rem 1rem; background-color: var(--bg-color);
+            border: 1px solid var(--border-color); border-radius: 8px;
+            color: var(--text-main); box-sizing: border-box; font-size: 0.95rem; cursor: pointer;
+        }
+        input[type="file"]:focus, select:focus { outline: none; border-color: var(--accent-color); }
+        .flex-group { display: flex; gap: 1rem; }
+        .flex-item { flex: 1; }
+    </style>
 </head>
 <body>
 
     <div class="container">
-    <div class="nav-bar">
-        <a href="/" class="back-link">← Ana Panel</a>
-        <span class="version-tag">Hızlı Dönüştürme</span>
-    </div>
+        <div style="margin-bottom: 1.5rem;">
+            <a href="/" style="color: var(--text-muted); font-size: 0.9rem;"><i class="fa-solid fa-arrow-left"></i> Ana Panel</a>
+        </div>
 
     <div class="card">
+
+        <div id="loading-overlay" class="overlay hidden">
+            <div class="spinner"></div>
+            <h3 class="overlay-title">Resminiz İşleniyor...</h3>
+            <p class="overlay-desc">Lütfen bekleyin, veri işleniyor ve görsel oluşturuluyor.</p>
+        </div>
+
         <h2 class="title text-center" style="font-size: 1.75rem;">Görsel Format Dönüştürücü</h2>
         <p class="subtitle text-center">Dosyanızı seçin, hedef formatı belirleyin ve anında indirin.</p>
 
@@ -27,12 +43,7 @@
             <div class="flex-group form-group">
                 <div class="flex-item">
                     <label for="fromFormat">Mevcut Format:</label>
-                    <select name="fromFormat" id="fromFormat" required>
-                        <option value="png">PNG</option>
-                        <option value="jpg">JPG / JPEG</option>
-                        <option value="webp">WebP</option>
-                        <option value="svg">SVG</option>
-                    </select>
+                    <input type="text" name="fromFormat" id="fromFormat" readonly placeholder="Dosya bekleniyor..." style="background-color: rgba(255,255,255,0.05); color: var(--text-muted); cursor: not-allowed; text-transform: uppercase; font-weight: bold;">
                 </div>
 
                 <div class="flex-item">
@@ -46,29 +57,39 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn">Dönüştür ve İndir</button>
+            <button type="submit" class="btn"><i class="fa-solid fa-image"></i>Dönüştür ve İndir</button>
         </form>
     </div>
 </div>
 
+    <footer>&copy; 2026 Çevrimiçi Medya Dönüştürme Platformu.</footer>
+
     <script>
     const imageInput = document.getElementById('imageInput');
     const fromFormatSelect = document.getElementById('fromFormat');
+    const toFormatSelect = document.getElementById('toFormat');
 
     imageInput.addEventListener('change', function(e) {
         const file = e.target.files[0];
-        if (!file) return;
+        if (!file){
+            fromFormatSelect.value = '';
+            return;
+        }
 
         const fileName = file.name.toLowerCase();
-        const fileExtension = fileName.split('.').pop();
+        let fileExtension = fileName.split('.').pop();
 
-        const finalExtension = fileExtension === 'jpeg' ? 'jpg' : fileExtension;
+        if (fileExtension === 'jpeg') fileExtension = 'jpg';
 
-        const hasOption = Array.from(fromFormatSelect.options).some(option => option.value === finalExtension);
+        fromFormatSelect.value = fileExtension;
+        console.log(`[Sistem Algıladı] Yüklenen dosya türü: ${fileExtension.toUpperCase()}`);
 
-        if (hasOption) {
-            fromFormatSelect.value = finalExtension;
-            console.log(`[Sistem Algıladı] Yüklenen dosya türü otomatik seçildi: ${finalExtension.toUpperCase()}`);
+        if (fromFormatSelect.value === toFormatSelect.value) {
+            if(fileExtension === "jpg") {
+                toFormatSelect.value = 'png';
+            } else {
+                toFormatSelect.value = 'jpg';
+            }
         }
     });
         document.getElementById('convertForm').addEventListener('submit', function(e) {
@@ -78,7 +99,16 @@
             if (fromFmt === toFmt) {
                 e.preventDefault();
                 alert('Hata: Kaynak format ile hedef format aynı olamaz! Lütfen farklı bir kombinasyon seçin.');
+                return;
             }
+
+            document.getElementById('loading-overlay').classList.remove('hidden');
+            const btn = this.querySelector('button[type="submit"]');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> İşleniyor...';
+            }
+            
         });
     </script>
 

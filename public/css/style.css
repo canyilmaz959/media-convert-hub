@@ -1,329 +1,165 @@
-/* Modern Renk Değişkenleri ve Reset */
 :root {
-    --bg-main: #f8fafc;
-    --bg-card: #ffffff;
-    --text-main: #0f172a;
-    --text-muted: #64748b;
-    --border-color: #e2e8f0;
-    --border-hover: #cbd5e1;
-    --primary: #2563eb;
-    --primary-hover: #1d4ed8;
-    --danger: #ef4444;
-    --success: #22c55e;
-    --radius: 12px;
+  --bg-color: #0f172a;
+  --card-bg: #1e293b;
+  --accent-color: #6366f1;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --border-color: #334155;
 }
 
 body {
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    background-color: var(--bg-main);
-    color: var(--text-main);
-    margin: 0;
-    padding: 0;
-    line-height: 1.5;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  font-family: 'Inter', -apple-system, sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Sayfa Düzeni */
+/* Linkleri sıfırlıyoruz */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
 .container {
-    max-width: 800px;
-    margin: 60px auto;
-    padding: 0 20px;
-    box-sizing: border-box;
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.text-center { text-align: center; }
+/* 🎯 KART YAPISI (position: relative OLMALI) */
+.card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 2rem;
+  position: relative; /* Overlay'in kartın dışına taşmasını engeller */
+  overflow: hidden;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+}
 
-/* Başlık Grubu */
 .title {
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: var(--text-main);
-    margin: 0 0 8px 0;
-    letter-spacing: -0.025em;
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, #a5b4fc 0%, #6366f1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .subtitle {
-    color: var(--text-muted);
-    font-size: 1.1rem;
-    margin: 0 0 40px 0;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin-bottom: 2rem;
 }
 
-/* Navigasyon / Üst Bar */
-.nav-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px;
-}
-
-.back-link {
-    color: var(--primary);
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.95rem;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    transition: color 0.2s;
-}
-
-.back-link:hover {
-    color: var(--primary-hover);
-}
-
-.version-tag {
-    color: var(--text-muted);
-    font-size: 0.85rem;
-    background: #e2e8f0;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-weight: 500;
-}
-
-/* Kart Yapıları */
-.card-grid {
-    display: flex;
-    gap: 24px;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-top: 20px;
-}
-
-.card {
-    background: var(--bg-card);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius);
-    padding: 32px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-    box-sizing: border-box;
-}
-
-/* Ana Sayfadaki Link Kartları */
-a.card-nav {
-    width: 340px;
-    text-decoration: none;
-    color: inherit;
-    text-align: left;
-    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-}
-
-a.card-nav:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 20px -3px rgba(0, 0, 0, 0.08);
-    border-color: var(--border-hover);
-}
-
-.card-icon {
-    font-size: 2.25rem;
-    margin-bottom: 16px;
-}
-
-.card-title {
-    font-size: 1.35rem;
-    font-weight: 700;
-    color: var(--text-main);
-    margin: 0 0 10px 0;
-}
-
-.card-desc {
-    color: var(--text-muted);
-    font-size: 0.95rem;
-    margin: 0;
-    line-height: 1.6;
-}
-
-/* Form Elemanları */
 .form-group {
-    margin-bottom: 24px;
-    text-align: left;
+  margin-bottom: 1.5rem;
 }
 
-label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 8px;
-    color: #475569;
-    font-size: 0.9rem;
+.form-group label {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
 }
 
-input[type="file"],
-input[type="text"],
-select {
-    width: 100%;
-    padding: 12px 16px;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    box-sizing: border-box;
-    font-size: 0.95rem;
-    color: var(--text-main);
-    background-color: var(--bg-card);
-    transition: border-color 0.2s, box-shadow 0.2s;
+input[type="text"] {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  color: var(--text-main);
+  box-sizing: border-box;
+  font-size: 0.95rem;
 }
 
-input[type="file"] {
-    background: #f8fafc;
-    cursor: pointer;
-}
-
-input[type="text"]:focus,
-select:focus {
-    outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
-}
-
-.flex-group {
-    display: flex;
-    gap: 16px;
-}
-
-.flex-item {
-    flex: 1;
-}
-
-/* Butonlar */
-.btn {
-    width: 100%;
-    background-color: var(--primary);
-    color: white;
-    border: none;
-    padding: 14px;
-    font-size: 1rem;
-    font-weight: 700;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.2s, transform 0.1s;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-}
-
-.btn:hover { background-color: var(--primary-hover); }
-.btn:active { transform: scale(0.98); }
-
-/* Sonuç Sayfası CSS Yapısı */
-.result-box {
-    margin-top: 24px;
-    padding: 20px;
-    border: 2px dashed var(--border-color);
-    border-radius: var(--radius);
-    background: #f8fafc;
-}
-
-.result-preview {
-    max-width: 100%;
-    max-height: 300px;
-    border-radius: 6px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    margin-bottom: 20px;
-}
-
-/* Uyarı ve Hata Mesajları */
-.alert-box {
-    padding: 24px;
-    border-radius: var(--radius);
-    background-color: #fef2f2;
-    border: 1px solid #fee2e2;
-    color: #991b1b;
-}
-
-.alert-title { font-size: 1.5rem; margin-top: 0; color: #7f1d1d; }
-
-.hidden {
-    display: none !important;
-}
-
-.overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(15, 23, 42, 0.9); /* Slate 900 renginde %90 opaklık */
-    z-index: 9999; /* Sayfadaki her şeyin en üstünde durması için */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: #ffffff;
-    backdrop-filter: blur(4px); /* Arka planı hafifçe bulandırır, çok şık durur */
-}
-
-.spinner {
-    width: 48px;
-    height: 48px;
-    border: 5px solid rgba(255, 255, 255, 0.1);
-    border-top: 5px solid var(--primary, #2563eb); /* Bizim ana mavi renk */
-    border-radius: 50%;
-    animation: spin 1s linear infinite; /* Kesintisiz dönme animasyonu */
-    margin-bottom: 16px;
-}
-
-.overlay-title {
-    color: #ffffff !important;
-    margin: 0 0 6px 0 !important;
-}
-
-.overlay-desc {
-    color: #94a3b8 !important;
-    margin: 0 !important;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-header {
-    background-color: var(--bg-card);
-    border-bottom: 1px solid var(--border-color);
-    padding: 16px 0;
-    width: 100%;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
-}
-
-.header-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 0 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-sizing: border-box;
-}
-
-.logo-area {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.logo-icon {
-    background-color: rgba(37, 99, 235, 0.1); /* Hafif mavi şeffaf arka plan */
-    color: var(--primary);
-    width: 36px;
-    height: 36px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.1rem;
-}
-
-.logo-text {
-    font-weight: 700;
-    font-size: 1.2rem;
-    color: var(--text-main);
-    letter-spacing: -0.01em;
-}
-
-.hero-area {
-    margin-top: 40px;
-    margin-bottom: 30px;
+input[type="text"]:focus {
+  outline: none;
+  border-color: var(--accent-color);
 }
 
 .input-tip {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    margin-top: 6px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 0.5rem;
+}
+
+.btn {
+  width: 100%;
+  padding: 0.85rem;
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* 🌀 YÜKLEME OVERLAY (KARTIN BİREBİR ÜSTÜNE TAM OTURAN) */
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(30, 41, 59, 0.95);
+  backdrop-filter: blur(4px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 20;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.overlay.hidden {
+  display: none !important;
+}
+
+.spinner {
+  width: 44px;
+  height: 44px;
+  border: 4px solid var(--border-color);
+  border-top-color: var(--accent-color);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 1rem;
+}
+
+.overlay-title {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+  color: var(--text-main);
+}
+
+.overlay-desc {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+footer {
+  margin-top: auto;
+  padding: 2rem 0;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  text-align: center;
 }

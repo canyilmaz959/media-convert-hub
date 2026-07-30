@@ -1,5 +1,7 @@
 import os
 from PIL import Image
+import io
+import base64
 
 def convert(input_path, output_path, to_fmt):
     """PNG dosyasını hedef formata (JPG, WebP, SVG) dönüştürür"""
@@ -29,12 +31,14 @@ def convert(input_path, output_path, to_fmt):
 
         # 3. SENARYO: PNG -> SVG (Vektör Taslağı)
         elif to_fmt == "svg":
-            # Yarın burayı OpenCV ile daha da detaylandırabiliriz ama şimdilik 
-            # hata vermemesi için basit bir SVG gövdesi üretiyoruz
-            w, h = img.size
+            with Image.open(input_path) as img:
+                w, h = img.size
+                buffered = io.BytesIO()
+                img.save(buffered, format="PNG")
+                img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
             with open(output_path, "w") as f:
-                f.write(f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" width="{w}" height="{h}">\n')
-                f.write(f'  <image href="file:///{input_path}" width="{w}" height="{h}"/>\n')
+                f.write(f'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 {w} {h}" width="{w}" height="{h}">\n')
+                f.write(f'  <image width="{w}" height="{h}" xlink:href="data:image/png;base64,{img_str}"/>\n')
                 f.write('</svg>\n')
             return True
 

@@ -4,15 +4,23 @@ RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \
     python3-venv \
+    python3-dev \
+    build-essential \
+    poppler-utils \
+    pkg-config \
+    libcairo2 \
+    libcairo2-dev \
+    libffi-dev \
+    shared-mime-info \
     && rm -rf /var/lib/apt/lists/*
-
-RUN pip3 install pdf2docx openpyxl python-docx python-pptx
-
-
 
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
+COPY requirements.txt ./
+
+RUN pip3 install --no-cache-dir -r requirements.txt
+
 COPY . .
 
 EXPOSE 3000

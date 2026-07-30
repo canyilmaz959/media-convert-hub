@@ -7,14 +7,14 @@ def convert(input_path, output_path, to_fmt):
     try:
         # 1. SENARYO: SVG -> PNG (CairoSVG doğrudan yüksek kaliteli PNG üretir)
         if to_fmt == "png":
-            cairosvg.svg2png(url=input_path, write_to=output_path)
+            cairosvg.svg2png(url=input_path, write_to=output_path, scale=3.0, dpi=300)
             return True
 
         # 2. SENARYO: SVG -> JPG
         elif to_fmt in ["jpg", "jpeg"]:
             # SVG'den doğrudan JPG üretilemediği için önce geçici (.temp) bir PNG yapıyoruz
             temp_png = output_path + ".temp.png"
-            cairosvg.svg2png(url=input_path, write_to=temp_png)
+            cairosvg.svg2png(url=input_path, write_to=temp_png, scale=3.0, dpi=300)
             
             # Oluşan geçici PNG'yi Pillow ile açıp arkasına beyaz fon koyarak JPG yapıyoruz
             img = Image.open(temp_png)
@@ -24,7 +24,7 @@ def convert(input_path, output_path, to_fmt):
             else:
                 background.paste(img)
                 
-            background.save(output_path, 'JPEG', quality=95)
+            background.save(output_path, 'JPEG', quality=100, subsampling=0)
             
             # İşimiz bitti, geçici dosyayı bellekten ve diskten siliyoruz
             img.close()

@@ -29,13 +29,16 @@ const upload = multer({
 });
 
 router.post('/convert', upload.single('image'), (req, res) => {
-    const fromFormat = req.body.fromFormat.toLowerCase();
-    const toFormat = req.body.toFormat.toLowerCase();
+
+    const detectedExt = path.extname(req.file.originalname).replace('.', '').toLowerCase();
+    const rawFrom = req.body.fromFormat ? req.body.fromFormat.trim().toLowerCase() : '';
+    const fromFormat = (rawFrom && rawFrom !== 'dosya bekleniyor...') ? rawFrom : (detectedExt === 'jpeg' ? 'jpg' : detectedExt);
+    const toFormat = req.body.toFormat ? req.body.toFormat.trim().toLowerCase() : '';
     
     if (!req.file) return res.status(400).send('Lütfen bir dosya yükleyin.');
 
     const inputPath = path.resolve(req.file.path);
-    const outputFilename = 'output_' + Date.now() + toFormat;
+    const outputFilename = 'output_' + Date.now() + '.' + toFormat;
     const outputPath = path.resolve('uploads', outputFilename);
 
     const pythonCmd = process.platform === 'win32' ? 'python' : 'python3';
@@ -47,21 +50,28 @@ router.post('/convert', upload.single('image'), (req, res) => {
     const pythonProccess = spawn(pythonCmd, [scriptPath, inputPath, outputPath, fromFormat, toFormat]);
 
     let pythonError = '';
+    let pythonOut = '';
+
 
     pythonProccess.stderr.on('data', (data) => {
         pythonError += data.toString();
     });
 
+    pythonProccess.stdout.on('data', (data) =>{
+        pythonOut += data.toString();
+    });
+
     pythonProccess.on('close', (code) => {
 
         if (code == 0) {
-            return res.render('result', { outputPath: '/uploads/' + outputFilename });
+            return res.render('result', { outputPath: '/uploads/' + outputFilename, isImage: true });
         }
 
         else {
 
             console.error(`[Sistem Hatası] Medya motoru yürütülemedi: ${pythonError}`);
-        return res.status(500).send(`
+            console.log(`[Sistem Hatası] Medya motoru yürütülemedi: ${pythonOut}`);
+            return res.status(500).send(`
             <div style="font-family: sans-serif; text-align: center; margin-top: 50px; color: #334155;">
                 <h2>İşlem Sırasında Bir Aksaklık Oluştu</h2>
                 <p>Lütfen farklı bir görsel ile tekrar deneyin.</p>
@@ -70,7 +80,10 @@ router.post('/convert', upload.single('image'), (req, res) => {
         `);
         }
 
-    return res.render('result', { outputPath: '/uploads/' + outputFilename });
+    return res.render('result', { 
+        outputPath: '/uploads/' + outputFilename,
+        isImage: true
+    });
     });
 });
 

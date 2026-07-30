@@ -29,7 +29,7 @@ router.post('/generate-qr', (req, res) => {
 
     pythonProcess.on('close', (code) => {
         if (code == 0) {
-            return res.render('result', { outputPath: '/uploads/' + outputFilename });
+            return res.render('result', { outputPath: '/uploads/' + outputFilename, isImage: true });
         }
         else {
             console.error(`[Sistem Hatası kod: ${code}] QR Motoru yürütülemedi: ${pythonError}`);

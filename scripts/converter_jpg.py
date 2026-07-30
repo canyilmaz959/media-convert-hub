@@ -1,5 +1,7 @@
 import cv2
 from PIL import Image
+import io
+import base64
 
 def convert(input_path, output_path, to_fmt):
     """JPG dosyasını hedef formata (PNG, WebP, SVG) dönüştürür"""
@@ -18,21 +20,16 @@ def convert(input_path, output_path, to_fmt):
 
         # 3. SENARYO: JPG -> SVG (Çizgileri Yakalama - OpenCV Sihri)
         elif to_fmt == "svg":
-            # İşte ablanın bayılacağı yer! Logoyu siyah-beyaz (grayscale) okuyoruz
-            gray = cv2.imread(input_path, cv2.IMREAD_GRAYSCALE)
-            # Threshold (eşikleme) ile pikselleri tam siyah ve tam beyaz olarak ayırıyoruz
-            _, thresh = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY_INV)
-            # Resimdeki çizgisel hatları (konturları) buluyoruz
-            contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+            with Image.open(input_path) as img:
+                w, h = img.size
+                buffered = io.BytesIO()
+                img.save(buffered, format="JPEG", quality=95)
+                img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
             
-            h, w = gray.shape
             # Bulduğumuz koordinatları gerçek bir SVG çizgisine (path) dönüştürüyoruz
-            with open(output_path, "w") as f:
-                f.write(f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" width="{w}" height="{h}">\n')
-                for c in contours:
-                    if len(c) > 2:
-                        path_data = "M " + " L ".join([f"{p[0][0]} {p[0][1]}" for p in c]) + " Z"
-                        f.write(f'  <path d="{path_data}" fill="black" stroke="none"/>\n')
+            with open(output_path, "w", encoding="utf-8") as f:
+                f.write(f'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 {w} {h}" width="{w}" height="{h}">\n')
+                f.write(f'  <image width="{w}" height="{h}" xlink:href="data:image/jpeg;base64,{img_str}"/>\n')
                 f.write('</svg>\n')
             return True
 
