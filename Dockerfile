@@ -23,5 +23,7 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 
 COPY . .
 
+RUN mkdir -p /app/uploads && chmod -R 777 /app/uploads
+
 EXPOSE 3000
 CMD ["node", "app.js"]
