@@ -27,7 +27,7 @@ Sistem, gelen yüksek hacimli dönüştürme isteklerini sunucu kaynaklarını (
 
 ### 📄 1. Belge & Office Dönüştürücü
 Desteklenen formatlar arası çapraz ve karşılıklı (PDF, PPTX, POTX, ODP, DOCX) dönüştürme desteği:
-* `DOCX` / `PPTX` / `POTX` / `ODP` ⇄ `PDF`
+* `DOCX` ⇄ `PPTX` ⇄ `POTX` ⇄ `ODP` ⇄ `PDF`
 * Sunum ve doküman formatlarının kendi aralarında dönüştürülmesi.
 
 ### 🖼️ 2. Görsel Format Dönüştürücü
@@ -55,3 +55,9 @@ Popüler görsel formatlarının birbirine kayıpsız/hızlı dönüştürülmes
          ├──► (Belge İşlemleri) ──► [ Node.js API ] ──► [ Gotenberg Docker (Go) ]
          ├──► (Görsel İşlemleri) ──► [ Node.js / Sharp Engine ]
          └──► (QR Kod Üretimi)  ──► [ Node.js QR Generator ]
+```
+## 🌐 Canlı Demo
+* **Projenin canlı versiyonunu incelemek için:**
+* 👉 https://media-convert-hub.onrender.com * 
+
+* **Developed with ☕ and Docker.**
