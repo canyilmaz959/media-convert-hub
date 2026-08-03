@@ -1,4 +1,3 @@
-<img width="1835" height="937" alt="dosya_anasayfa" src="https://github.com/user-attachments/assets/fcaee2e0-18f9-4be3-ac3c-336bb4a45e35" />
 # 🔄 Media Convert Hub
 
 > **Docker** ve **Gotenberg** mikroservis mimarisi üzerinde çalışan; Belge, Görsel ve QR Kod dönüştürme süreçlerini tek çatı altında toplayan yüksek performanslı web uygulaması.
@@ -19,7 +18,7 @@ Sistem, gelen yüksek hacimli dönüştürme isteklerini sunucu kaynaklarını (
 
 | Belge & Ofis Dönüştürücü | Görsel Format Dönüştürücü | QR Kod Oluşturucu |
 | :---: | :---: | :---: |
-| ![Belge Görseli](C:\Users\muham\OneDrive\Desktop\dosya_ss\dosya_dosya.png) | ![Görsel Sayfası](C:\Users\muham\OneDrive\Desktop\dosya_ss\dosya_görsel.png) | ![QR Sayfası](C:\Users\muham\OneDrive\Desktop\dosya_ss\dosya_qr.png) |
+| ![Belge Görseli](https://github.com/user-attachments/assets/ecdafc09-62b8-410f-a014-2bc29e28ee57) | ![Görsel Sayfası](https://github.com/user-attachments/assets/6a46ba8e-6284-4f57-a7cd-d022fc58b4a1) | ![QR Sayfası](https://github.com/user-attachments/assets/1b16b76d-ace7-4c99-96b8-5f6180c5acb3) |
 | *Office ve PDF formatları arası geçiş* | *Görseller arası kayıpsız format dönüşümü* | *Bağlantılardan hızlı QR kod üretimi* |
 
 ---
