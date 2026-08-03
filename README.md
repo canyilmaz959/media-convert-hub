@@ -1,38 +1,49 @@
 # 🔄 Media Convert Hub
 
-> **Docker** ve **Gotenberg** mikroservis mimarisi üzerinde çalışan, yüksek performanslı ve bellek (RAM) optimizasyonlu medya ve belge dönüştürme uygulaması.
+> **Docker** ve **Gotenberg** mikroservis mimarisi üzerinde çalışan; Belge, Görsel ve QR Kod dönüştürme süreçlerini tek çatı altında toplayan yüksek performanslı web uygulaması.
 
-![Project Banner](./screenshots/banner.png) <!-- 📸 BURAYA PROJENİN GENEL EKRAN GÖRÜNTÜSÜNÜ VEYA BANNER RESMİNİ KOYABİLİRSİN -->
+![Project Banner](C:\Users\muham\OneDrive\Desktop\dosya_ss\dosya_anasayfa.png) <!-- 📸 BURAYA PROJENİN GENEL EKRAN GÖRÜNTÜSÜNÜ VEYA BANNER RESMİNİ KOYABİLİRSİN -->
 
 ---
 
 ## 🚀 Proje Hakkında
 
-Media Convert Hub; Office belgelerini (DOCX, XLSX, PPTX), görselleri ve metin dosyalarını hızlı ve güvenilir bir şekilde PDF ve diğer formatlara dönüştüren bir web servisidir. 
+Media Convert Hub; belgelerinizi, görsellerinizi ve bağlantılarınızı anında dönüştüren modüler bir medya yönetim aracıdır. 
 
-Sistem, gelen istekleri yük altında bile sunucu kaynaklarını (özellikle RAM) tüketmeden işlemek üzere **Node.js (Express)** ve **Gotenberg (Go tabanlı dönüştürme motoru)** mikroservis iletişimiyle kurgulanmıştır.
+Sistem, gelen yüksek hacimli dönüştürme isteklerini sunucu kaynaklarını (özellikle RAM) yormadan işlemek üzere **Node.js (Express)** ve **Gotenberg (Go tabanlı dönüştürme motoru)** mikroservis mimarisiyle kurgulanmıştır.
 
 ---
 
 ## 📸 Ekran Görüntüleri
 
-| Ana Dönüştürme Arayüzü | İşlem Sonucu & İndirme |
-| :---: | :---: |
-| ![Arayüz Görseli](./screenshots/dashboard.png) | ![Sonuç Görseli](./screenshots/result.png) |
-| *Sürükle-bırak destekli dosya yükleme alanı* | *Başarılı dönüştürme ve hızlı indirme ekranı* |
+| Belge & Ofis Dönüştürücü | Görsel Format Dönüştürücü | QR Kod Oluşturucu |
+| :---: | :---: | :---: |
+| ![Belge Görseli](C:\Users\muham\OneDrive\Desktop\dosya_ss\dosya_dosya.png) | ![Görsel Sayfası](C:\Users\muham\OneDrive\Desktop\dosya_ss\dosya_görsel.png) | ![QR Sayfası](C:\Users\muham\OneDrive\Desktop\dosya_ss\dosya_qr.png) |
+| *Office ve PDF formatları arası geçiş* | *Görseller arası kayıpsız format dönüşümü* | *Bağlantılardan hızlı QR kod üretimi* |
 
 ---
 
-## 🛠️ Mimari ve Öne Çıkan Özellikler
+## 🛠️ Dönüştürme Modülleri & Yetenekler
 
-* **Mikroservis Mimarisi:** Dönüştürme motoru (Gotenberg) ile web katmanı (Express) birbirinden izole konteynerler/servisler halinde haberleşir.
-* **Low RAM Optimizations:** Render.com üzerindeki **512 MB RAM** sınırına takılmamak için bellek tüketimi minimize edilmiş, dosya akışları (streams) optimize edilmiştir.
-* **Çoklu Format Desteği:** 
-  * `DOCX` / `DOC` → `PDF`
-  * `XLSX` / `CSV` → `PDF`
-  * `PPTX` → `PDF`
-  * Görsel & Metin formatları arası dönüştürme
-* **Güvenli & Geçici Depolama:** Dönüştürülen dosyalar sunucu diskini doldurmaz, işlem sonrası otomatik temizlenir.
+### 📄 1. Belge & Office Dönüştürücü
+Desteklenen formatlar arası çapraz ve karşılıklı (PDF, PPTX, POTX, ODP, DOCX) dönüştürme desteği:
+* `DOCX` / `PPTX` / `POTX` / `ODP` ⇄ `PDF`
+* Sunum ve doküman formatlarının kendi aralarında dönüştürülmesi.
+
+### 🖼️ 2. Görsel Format Dönüştürücü
+Popüler görsel formatlarının birbirine kayıpsız/hızlı dönüştürülmesi:
+* `JPEG` ⇄ `PNG` ⇄ `WEBP` ⇄ `SVG`
+
+### 📱 3. QR Kod Sayfası
+* Herhangi bir URL veya metin bağlantısını anında taranabilir **QR Kod** görsellerine dönüştürme.
+
+---
+
+## ⚡ Mimari & Öne Çıkan Özellikler
+
+* **Mikroservis Mimarisi:** Dönüştürme motoru (Gotenberg) ile web katmanı (Express) izole konteynerler halinde haberleşir.
+* **Low RAM Optimization:** Render.com üzerindeki **512 MB RAM** sınırına takılmamak için bellek tüketimi ve akışlar (streams) özel olarak optimize edilmiştir.
+* **Geçici Depolama Güvenliği:** İşlenen dosyalar sunucu diskinde yer kaplamaz, dönüştürme sonrası otomatik temizlenir.
 
 ---
 
@@ -41,11 +52,6 @@ Sistem, gelen istekleri yük altında bile sunucu kaynaklarını (özellikle RAM
 ```text
 [ İstemci / Tarayıcı ]
          │
-         ▼ (HTTP Multipart Upload)
-[ Node.js / Express Web Servisi ]
-         │
-         ▼ (Stream / API Request)
-[ Gotenberg Docker Service (Go) ] ──► (LibreOffice / PDF Engine)
-         │
-         ▼ (Dönüştürülen PDF)
-[ İstemciye İndirme Yanıtı ]
+         ├──► (Belge İşlemleri) ──► [ Node.js API ] ──► [ Gotenberg Docker (Go) ]
+         ├──► (Görsel İşlemleri) ──► [ Node.js / Sharp Engine ]
+         └──► (QR Kod Üretimi)  ──► [ Node.js QR Generator ]
