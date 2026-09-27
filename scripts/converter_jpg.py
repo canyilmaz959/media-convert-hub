@@ -1,4 +1,3 @@
-import cv2
 from PIL import Image
 import io
 import base64
@@ -7,6 +6,8 @@ def convert(input_path, output_path, to_fmt):
     """JPG dosyasını hedef formata (PNG, WebP, SVG) dönüştürür"""
     try:
         img = Image.open(input_path)
+
+        # DEĞİŞİKLİK: Kullanılmayan OpenCV (cv2) importu kaldırıldı; JPG dönüşümünde gereksiz bağımlılık ve RAM yükü azaltılıyor.
 
         # 1. SENARYO: JPG -> PNG
         if to_fmt == "png":

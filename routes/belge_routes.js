@@ -42,29 +42,39 @@ const upload = multer({
 });
 
 router.post('/convert', upload.single('document'), async (req, res) => {
-    const fromFormat = req.body.fromFormat.toLowerCase();
-    const toFormat = req.body.toFormat.toLowerCase();
+    // DEĞİŞİKLİK: Form alanları eksik geldiğinde TypeError oluşmasını önlemek için güvenli erişim kullanıldı.
+    const fromFormat = req.body.fromFormat ? req.body.fromFormat.toLowerCase() : '';
+    // DEĞİŞİKLİK: Form alanları eksik geldiğinde TypeError oluşmasını önlemek için güvenli erişim kullanıldı.
+    const toFormat = req.body.toFormat ? req.body.toFormat.toLowerCase() : '';
 
+    // DEĞİŞİKLİK: Dosya kontrolü req.file kullanılmadan önce yapıldı.
     if (!req.file) return res.status(400).send("Lütfen bir dosya yükleyin!");
 
     const inputPath = req.file.path;
-    const originalName = path.basename(req.file.filename, path.extname(req.file.filename));
+    // DEĞİŞİKLİK: Kullanılmayan originalName değişkeni kaldırıldı.
     const safename = Date.now();
 
     const outputFilename = safename + '.' + 'pdf';
     const outputPath = path.join(__dirname, '../uploads', outputFilename);
 
-
     try{
         const form = new FormData();
 
         form.append('files', fs.createReadStream(inputPath), safename + path.extname(req.file.originalname));
-        console.log(`dosya gotenberge gönderiliyor: ${req.file.safename}`);
+        // DEĞİŞİKLİK: req.file.safename mevcut olmadığı için undefined yazıyordu; gerçek dosya bilgisi loglanıyor.
+        console.log(`Gotenberg'e gönderiliyor: ${inputPath}`);
+        // DEĞİŞİKLİK: Hangi Gotenberg adresine istek gönderildiğini tespit etmek için endpoint loglandı.
+        console.log(`Gotenberg URL: ${GOTENBERG_URL}/forms/libreoffice/convert`);
 
         const response = await axios.post(`${GOTENBERG_URL}/forms/libreoffice/convert`, form, {
             headers: {...form.getHeaders() },
-            responseType: 'stream'
+            responseType: 'stream',
+            // DEĞİŞİKLİK: Axios timeout'u 60 saniyelik k6 beklemesinden bağımsız olarak gerçek isteğin davranışını görmek için 120 saniyeye çıkarıldı.
+            timeout: 120000
         });
+
+        // DEĞİŞİKLİK: Gotenberg HTTP durumunun hata ayıklamada görünmesi için log eklendi.
+        console.log(`Gotenberg yanıtı: HTTP ${response.status}`);
 
         const writer = fs.createWriteStream(outputPath);
         response.data.pipe(writer);
@@ -146,7 +156,15 @@ router.post('/convert', upload.single('document'), async (req, res) => {
         }
 
     } catch (error) {
+        // DEĞİŞİKLİK: Gotenberg'in 429 gibi HTTP hatalarında durum kodu, durum metni ve yanıt gövdesi loglanarak gerçek hata kaynağı görünür hale getirildi.
         console.error('Gotenberg ile dönüştürme sırasında hata oluştu:', error.message);
+        // DEĞİŞİKLİK: HTTP durum kodunu ayrıca loglamak 429 rate-limit durumunu doğrudan tespit etmeyi sağlar.
+        console.error('Gotenberg HTTP durumu:', error.response?.status || 'HTTP yanıtı yok');
+        // DEĞİŞİKLİK: Gotenberg'in döndürdüğü hata detaylarını görmek için yanıt verisi loglandı.
+        if (error.response?.data && typeof error.response.data !== 'string') {
+            console.error('Gotenberg hata yanıtı:', error.response.data);
+        }
+
         if(fs.existsSync(inputPath)) {fs.unlinkSync(inputPath);}
         if(fs.existsSync(outputPath)) {fs.unlinkSync(outputPath);}
 
@@ -154,8 +172,5 @@ router.post('/convert', upload.single('document'), async (req, res) => {
 
     }
 });
-
-
-            
 
 module.exports = router;
