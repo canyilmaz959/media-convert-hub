@@ -1,6 +1,7 @@
 import sys
 import os
 import gc
+import tempfile
 
 if len(sys.argv) < 4:
     print("ERROR: Eksik argümanlar. Kullanım: main.py <input> <output> <format>")
@@ -50,10 +51,12 @@ def convert_to_pptx(infile, outfile):
 
     prs = Presentation()
     blank_slide_layout = prs.slide_layouts[6]
-    base_dir = os.path.dirname(outfile) or "."
-    temp_path = os.path.join(base_dir, "temp_document_page.png")
 
-    try:
+    # Her Python süreci için benzersiz geçici klasör.
+    # Aynı anda birden fazla dönüşüm çalışırken dosyalar birbirine girmez.
+    with tempfile.TemporaryDirectory(prefix="pdf_pptx_") as temp_dir:
+        temp_path = os.path.join(temp_dir, "page.png")
+
         for page_number, pix in convert_pdf_pages_to_images(infile):
             pix.save(temp_path)
 
@@ -66,13 +69,9 @@ def convert_to_pptx(infile, outfile):
                 height=prs.slide_height
             )
 
-            if os.path.exists(temp_path):
-                os.remove(temp_path)
-
             print(f"Sayfa işlendi: {page_number + 1}")
-    finally:
-        if os.path.exists(temp_path):
-            os.remove(temp_path)
+            del pix
+            gc.collect()
 
     prs.save(outfile)
 
@@ -82,12 +81,13 @@ def convert_to_odp(infile, outfile):
     from odf.draw import Page, Frame, Image
 
     doc = OpenDocumentPresentation()
-    base_dir = os.path.dirname(outfile) or "."
-    temp_path = os.path.join(base_dir, "temp_document_page.png")
 
-    try:
+    # odfpy, addPicture() ile verilen dosyayı doc.save() sırasında paketleyebilir.
+    # Bu yüzden PNG'leri save() tamamlanana kadar silmiyoruz.
+    # RAM'i sınırlamak için yine de sayfaları tek tek render ediyoruz.
+    with tempfile.TemporaryDirectory(prefix="pdf_odp_") as temp_dir:
         for page_number, pix in convert_pdf_pages_to_images(infile):
-            # Sadece bir sayfanın PNG'si aynı anda diskte/RAM'de tutuluyor.
+            temp_path = os.path.join(temp_dir, f"page_{page_number + 1}.png")
             pix.save(temp_path)
 
             slide = Page(
@@ -108,18 +108,12 @@ def convert_to_odp(infile, outfile):
             img_node = Image(href=href)
             frame.appendChild(img_node)
 
-            if os.path.exists(temp_path):
-                os.remove(temp_path)
-
             print(f"Sayfa işlendi: {page_number + 1}")
-
-            # Sayfa bazlı dönüşümden sonra geçici Python nesnelerini temizle.
+            del pix
             gc.collect()
-    finally:
-        if os.path.exists(temp_path):
-            os.remove(temp_path)
 
-    doc.save(outfile)
+        # Geçici görseller bu noktaya kadar mevcut olmalı.
+        doc.save(outfile)
 
 
 def convert_to_potx(infile, outfile):
@@ -127,10 +121,10 @@ def convert_to_potx(infile, outfile):
 
     prs = Presentation()
     blank_slide_layout = prs.slide_layouts[6]
-    base_dir = os.path.dirname(outfile) or "."
-    temp_path = os.path.join(base_dir, "temp_document_page.png")
 
-    try:
+    with tempfile.TemporaryDirectory(prefix="pdf_potx_") as temp_dir:
+        temp_path = os.path.join(temp_dir, "page.png")
+
         for page_number, pix in convert_pdf_pages_to_images(infile):
             pix.save(temp_path)
 
@@ -143,13 +137,9 @@ def convert_to_potx(infile, outfile):
                 height=prs.slide_height
             )
 
-            if os.path.exists(temp_path):
-                os.remove(temp_path)
-
             print(f"Sayfa işlendi: {page_number + 1}")
-    finally:
-        if os.path.exists(temp_path):
-            os.remove(temp_path)
+            del pix
+            gc.collect()
 
     prs.save(outfile)
 
