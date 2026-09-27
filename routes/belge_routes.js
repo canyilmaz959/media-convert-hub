@@ -93,11 +93,6 @@ router.post('/convert', upload.single('document'), async (req, res) => {
     let intermediatePdfPath = null;
 
     try {
-        /*
-         * PDF zaten PDF olduğu için PDF kaynaklı dönüşümlerde Gotenberg'e
-         * tekrar PDF gönderilmesi gereksizdir. Bu hem süreyi hem de RAM/CPU
-         * kullanımını azaltır.
-         */
         if (sourceFormat === 'pdf') {
             intermediatePdfPath = inputPath;
             console.log(`PDF kaynak dosyası doğrudan Python'a veriliyor: ${inputPath}`);
