@@ -67,7 +67,10 @@ router.post('/convert', upload.single('image'), (req, res) => {
     pythonProccess.on('error', (err) => {
         console.error(`[Python Process Hatası] ${err.message}`);
         if (fs.existsSync(inputPath)) fs.unlinkSync(inputPath);
-        return res.status(500).send('Dönüştürme motoru başlatılamadı.');
+        return res.status(500).render('error', {
+            message: 'Görsel dönüştürme işlemi başlatılamadı. Lütfen yeniden deneyin.',
+            retryUrl: '/pngpage'
+        });
     });
 
     pythonProccess.on('close', (code) => {
@@ -83,13 +86,10 @@ router.post('/convert', upload.single('image'), (req, res) => {
 
             console.error(`[Sistem Hatası] Medya motoru yürütülemedi: ${pythonError}`);
             console.log(`[Sistem Hatası] Medya motoru yürütülemedi: ${pythonOut}`);
-            return res.status(500).send(`
-            <div style="font-family: sans-serif; text-align: center; margin-top: 50px; color: #334155;">
-                <h2>İşlem Sırasında Bir Aksaklık Oluştu</h2>
-                <p>Lütfen farklı bir görsel ile tekrar deneyin.</p>
-                <a href="/" style="color: #2563eb; text-decoration: none; font-weight: bold;">← Ana Sayfaya Dön</a>
-            </div>
-        `);
+            return res.status(500).render('error', {
+                message: 'Görsel işlenirken bir sorun oluştu. Lütfen farklı bir dosya deneyin.',
+                retryUrl: '/pngpage'
+            });
         }
     });
 });
