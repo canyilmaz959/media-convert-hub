@@ -33,7 +33,10 @@ router.post('/generate-qr', (req, res) => {
         }
         else {
             console.error(`[Sistem Hatası kod: ${code}] QR Motoru yürütülemedi: ${pythonError}`);
-            return res.status(500).send("Karekod oluşturulurken sistemsel bir aksaklık yaşandı.");
+            return res.status(500).render('error', {
+                message: 'Karekod oluşturulurken bir sorun oluştu. Lütfen yeniden deneyin.',
+                retryUrl: '/qrpage'
+            });
         }
     });
     
