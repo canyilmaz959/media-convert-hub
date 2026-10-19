@@ -204,9 +204,10 @@ router.post('/convert', upload.single('document'), async (req, res) => {
             fs.unlinkSync(intermediatePdfPath);
         }
 
-        return res.status(500).send(
-            'Dönüştürme sırasında bir hata oluştu. Lütfen tekrar deneyin.'
-        );
+        return res.status(500).render('error', {
+            message: 'Dosya dönüştürülürken bir sorun oluştu. Lütfen yeniden deneyin.',
+            retryUrl: '/filepage'
+        });
     }
 });
 
